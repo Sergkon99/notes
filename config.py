@@ -1,0 +1,1 @@
+CNT_LETTERS = 5
