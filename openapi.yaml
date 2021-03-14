@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+    title: "Notes service"
+    version: "1.0"
+
+paths:
+    /notes:
+        post:
+            description: "Добавление заметки с возможностью указания заголовка (title) и текста заметки (conten)"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/NotesPostRequest"
+            responses:
+                "201":
+                    description: "Created"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/NoteItem"
+                "400":
+                    description: "Bad request"
+                    content:
+                        application/json:
+                            schema:
+                                type: string
+
+        get:
+            description: "Получение списка всех заметок"
+            responses:
+                "200":
+                    description: "OK"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/NoteItems"
+    /notes/{id}:
+        get:
+            description: "Получение заметки по номеру"
+            responses:
+                "200":
+                    description: "OK"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/NoteItem"
+        put:
+            description: "Редактирование заметки по номеру"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/NotesPostRequest"
+            responses:
+                "200":
+                    description: "OK"
+        delete:
+            description: "Удаление заметки по ее идентификатору"
+            responses:
+                "200":
+                    description: "OK"
+
+components:
+    schemas:
+        NotesPostRequest:
+            type: object
+            additionalProperties: false
+            properties:
+                title:
+                    type: string
+                content:
+                    type: string
+            required:
+                - content
+
+        NoteItem:
+            type: object
+            additionalProperties: false
+            properties:
+                id:
+                    type: integer
+                title:
+                    type: string
+                content:
+                    type: string
+            required:
+                - id
+                - title
+                - content
+
+        NoteItems:
+            type: array
+            additionalProperties: false
+            items:
+                $ref: "#/components/schemas/NoteItem"
